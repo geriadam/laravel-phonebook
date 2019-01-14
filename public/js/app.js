@@ -1831,7 +1831,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/phonebook', this.$data.list).then(function (response) {
-        return _this.close();
+        _this.close();
+
+        _this.$parent.lists.push(response.data);
       }).catch(function (error) {
         return _this.errors = error.response.data.errors;
       });
@@ -1970,6 +1972,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 var Add = __webpack_require__(/*! ./Add.vue */ "./resources/js/components/Add.vue").default;
 
 var Show = __webpack_require__(/*! ./Show.vue */ "./resources/js/components/Show.vue").default;
@@ -1988,7 +1993,8 @@ var Update = __webpack_require__(/*! ./Edit.vue */ "./resources/js/components/Ed
       showActive: '',
       updateActive: '',
       lists: {},
-      errors: {}
+      errors: {},
+      loading: false
     };
   },
   mounted: function mounted() {
@@ -2014,6 +2020,20 @@ var Update = __webpack_require__(/*! ./Edit.vue */ "./resources/js/components/Ed
     openUpdate: function openUpdate(key) {
       this.$children[2].list = this.lists[key];
       this.updateActive = "is-active";
+    },
+    del: function del(key, id) {
+      var _this2 = this;
+
+      if (confirm("Are you sure ? ")) {
+        this.loading = !this.loading;
+        axios.delete("/phonebook/".concat(id)).then(function (response) {
+          _this2.lists.splice(key, 1);
+
+          _this2.loading = !_this2.loading;
+        }).catch(function (error) {
+          return _this2.erros = error.response.data.errors;
+        });
+      }
     }
   }
 });
@@ -37353,7 +37373,13 @@ var render = function() {
                 on: { click: _vm.openAdd }
               },
               [_vm._v("\n\t\t\t\tAdd new\n\t\t\t")]
-            )
+            ),
+            _vm._v(" "),
+            _vm.loading
+              ? _c("span", { staticClass: "is-pulled-right" }, [
+                  _c("i", { staticClass: "fa fa-refresh fa-spin fa-2x fa-fw" })
+                ])
+              : _vm._e()
           ]),
           _vm._v(" "),
           _vm._m(0),
@@ -37364,7 +37390,17 @@ var render = function() {
                 _vm._v("\n\t\t\t\t" + _vm._s(item.name) + "\n\t\t\t")
               ]),
               _vm._v(" "),
-              _vm._m(1, true),
+              _c("span", { staticClass: "panel-icon column is-1" }, [
+                _c("i", {
+                  staticClass: "has-text-danger fa fa-trash",
+                  attrs: { "aria-hidden": "true" },
+                  on: {
+                    click: function($event) {
+                      _vm.del(key, item.id)
+                    }
+                  }
+                })
+              ]),
               _vm._v(" "),
               _c("span", { staticClass: "panel-icon column is-1" }, [
                 _c("i", {
@@ -37429,17 +37465,6 @@ var staticRenderFns = [
           _c("i", { staticClass: "fa fa-search" })
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "panel-icon column is-1" }, [
-      _c("i", {
-        staticClass: "has-text-danger fa fa-trash",
-        attrs: { "aria-hidden": "true" }
-      })
     ])
   }
 ]
