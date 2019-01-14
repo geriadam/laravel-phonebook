@@ -1,14 +1,12 @@
 <template>
 	<footer class="footer">
-		<div class="container">
-			<div class="content has-etxt-centered">
-				<p>
-					<strong>Vuejs Phonebook App</strong> by <a href="http://github.com/geriadam">Geri adam</a>.
-				</p>
-				<p>
-					<a class="icon" href="http://github.com/geriadam"><i class="fa fa-github"></i></a>
-				</p>
-			</div>
-		</div>
+		<div class="content has-text-centered">
+	    	<p>
+	      		<strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+	      		<a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+	      			is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0
+	      		</a>.
+	    	</p>
+	  	</div>
 	</footer>
 </template>

@@ -1802,8 +1802,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['openmodal', 'closemodal'],
+  props: ['openmodal'],
   data: function data() {
     return {
       list: {
@@ -1824,7 +1833,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/phonebook', this.$data.list).then(function (response) {
         return console.log(response);
       }).catch(function (error) {
-        return _this.errors = error.response.data;
+        return _this.errors = error.response.data.errors;
       });
     }
   }
@@ -1884,8 +1893,19 @@ var Add = __webpack_require__(/*! ./Add.vue */ "./resources/js/components/Add.vu
   },
   data: function data() {
     return {
-      addActive: ''
+      addActive: '',
+      lists: {},
+      errors: {}
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/getData').then(function (response) {
+      return _this.lists = response.data;
+    }).catch(function (error) {
+      return _this.errors = error.response.data.errors;
+    });
   },
   methods: {
     openAdd: function openAdd() {
@@ -36809,92 +36829,137 @@ var render = function() {
         _c("div", { staticClass: "field" }, [
           _c("label", { staticClass: "label" }, [_vm._v("Name")]),
           _vm._v(" "),
-          _c("div", { staticClass: "control" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.list.name,
-                  expression: "list.name"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "text", placeholder: "Name" },
-              domProps: { value: _vm.list.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+          _c(
+            "div",
+            { staticClass: "control" },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.list.name,
+                    expression: "list.name"
                   }
-                  _vm.$set(_vm.list, "name", $event.target.value)
+                ],
+                staticClass: "input",
+                class: { "is-danger": _vm.errors.name },
+                attrs: { type: "text", placeholder: "Name" },
+                domProps: { value: _vm.list.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.list, "name", $event.target.value)
+                  }
                 }
-              }
-            })
-          ])
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.errors.name, function(value, key) {
+                return _vm.errors.name
+                  ? _c("small", { staticClass: "has-text-danger" }, [
+                      _vm._v("\n\t\t\t\t\t\t" + _vm._s(value) + "\n\t\t\t\t\t")
+                    ])
+                  : _vm._e()
+              })
+            ],
+            2
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "field" }, [
           _c("label", { staticClass: "label" }, [_vm._v("Phone")]),
           _vm._v(" "),
-          _c("div", { staticClass: "control" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.list.phone,
-                  expression: "list.phone"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "number", placeholder: "Phone" },
-              domProps: { value: _vm.list.phone },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+          _c(
+            "div",
+            { staticClass: "control" },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.list.phone,
+                    expression: "list.phone"
                   }
-                  _vm.$set(_vm.list, "phone", $event.target.value)
+                ],
+                staticClass: "input",
+                class: { "is-danger": _vm.errors.phone },
+                attrs: { type: "number", placeholder: "Phone" },
+                domProps: { value: _vm.list.phone },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.list, "phone", $event.target.value)
+                  }
                 }
-              }
-            })
-          ])
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.errors.phone, function(value, key) {
+                return _vm.errors.phone
+                  ? _c("small", { staticClass: "has-text-danger" }, [
+                      _vm._v("\n\t\t\t\t\t\t" + _vm._s(value) + "\n\t\t\t\t\t")
+                    ])
+                  : _vm._e()
+              })
+            ],
+            2
+          )
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "field" }, [
-          _c("label", { staticClass: "label" }, [_vm._v("Email")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "control" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.list.email,
-                  expression: "list.email"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "email", placeholder: "Email" },
-              domProps: { value: _vm.list.email },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+        _c(
+          "div",
+          { staticClass: "field" },
+          [
+            _c("label", { staticClass: "label" }, [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "control" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.list.email,
+                    expression: "list.email"
                   }
-                  _vm.$set(_vm.list, "email", $event.target.value)
+                ],
+                staticClass: "input",
+                class: { "is-danger": _vm.errors.email },
+                attrs: { type: "email", placeholder: "Email" },
+                domProps: { value: _vm.list.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.list, "email", $event.target.value)
+                  }
                 }
-              }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.errors.email, function(value, key) {
+              return _vm.errors.email
+                ? _c("small", { staticClass: "has-text-danger" }, [
+                    _vm._v("\n\t\t\t\t\t" + _vm._s(value) + "\n\t\t\t\t")
+                  ])
+                : _vm._e()
             })
-          ])
-        ])
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
       _c("footer", { staticClass: "modal-card-foot" }, [
         _c(
           "button",
-          { staticClass: "button is-success", on: { click: _vm.save } },
+          {
+            staticClass: "button disabled is-success",
+            on: { click: _vm.save }
+          },
           [_vm._v("\n\t\t\t\tSave Change\n\t\t\t")]
         ),
         _vm._v(" "),
@@ -36930,23 +36995,40 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("nav", { staticClass: "panel column is-offset-2 is-8" }, [
-        _c("p", { staticClass: "panel-heading" }, [
-          _vm._v("\n\t\t\tVuejs Phonebook\n\t\t\t"),
-          _c(
-            "button",
-            {
-              staticClass: "button is-primary is-outlined",
-              on: { click: _vm.openAdd }
-            },
-            [_vm._v("\n\t\t\t\tAdd new\n\t\t\t")]
-          )
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1)
-      ]),
+      _c(
+        "nav",
+        { staticClass: "panel column is-offset-2 is-8" },
+        [
+          _c("p", { staticClass: "panel-heading" }, [
+            _vm._v("\n\t\t\tVuejs Phonebook\n\t\t\t"),
+            _c(
+              "button",
+              {
+                staticClass: "button is-primary is-outlined",
+                on: { click: _vm.openAdd }
+              },
+              [_vm._v("\n\t\t\t\tAdd new\n\t\t\t")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._l(_vm.lists, function(item, key) {
+            return _c("a", { staticClass: "panel-block" }, [
+              _c("span", { staticClass: "column is-9" }, [
+                _vm._v("\n\t\t\t\t" + _vm._s(item.name) + "\n\t\t\t")
+              ]),
+              _vm._v(" "),
+              _vm._m(1, true),
+              _vm._v(" "),
+              _vm._m(2, true),
+              _vm._v(" "),
+              _vm._m(3, true)
+            ])
+          })
+        ],
+        2
+      ),
       _vm._v(" "),
       _c("Add", {
         attrs: { openmodal: _vm.addActive },
@@ -36978,31 +37060,33 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "panel-block" }, [
-      _c("span", { staticClass: "column is-9" }, [
-        _vm._v("\n\t\t\t\tmarksheet\n\t\t\t")
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "panel-icon column is-1" }, [
-        _c("i", {
-          staticClass: "has-text-danger fa fa-trash",
-          attrs: { "aria-hidden": "true" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "panel-icon column is-1" }, [
-        _c("i", {
-          staticClass: "has-text-info fa fa-edit",
-          attrs: { "aria-hidden": "true" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "panel-icon column is-1" }, [
-        _c("i", {
-          staticClass: "has-text-primary fa fa-eye",
-          attrs: { "aria-hidden": "true" }
-        })
-      ])
+    return _c("span", { staticClass: "panel-icon column is-1" }, [
+      _c("i", {
+        staticClass: "has-text-danger fa fa-trash",
+        attrs: { "aria-hidden": "true" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "panel-icon column is-1" }, [
+      _c("i", {
+        staticClass: "has-text-info fa fa-edit",
+        attrs: { "aria-hidden": "true" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "panel-icon column is-1" }, [
+      _c("i", {
+        staticClass: "has-text-primary fa fa-eye",
+        attrs: { "aria-hidden": "true" }
+      })
     ])
   }
 ]
@@ -37035,27 +37119,32 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("footer", { staticClass: "footer" }, [
-      _c("div", { staticClass: "container" }, [
-        _c("div", { staticClass: "content has-etxt-centered" }, [
-          _c("p", [
-            _c("strong", [_vm._v("Vuejs Phonebook App")]),
-            _vm._v(" by "),
-            _c("a", { attrs: { href: "http://github.com/geriadam" } }, [
-              _vm._v("Geri adam")
-            ]),
-            _vm._v(".\n\t\t\t")
+      _c("div", { staticClass: "content has-text-centered" }, [
+        _c("p", [
+          _c("strong", [_vm._v("Bulma")]),
+          _vm._v(" by "),
+          _c("a", { attrs: { href: "https://jgthms.com" } }, [
+            _vm._v("Jeremy Thomas")
           ]),
-          _vm._v(" "),
-          _c("p", [
-            _c(
-              "a",
-              {
-                staticClass: "icon",
-                attrs: { href: "http://github.com/geriadam" }
-              },
-              [_c("i", { staticClass: "fa fa-github" })]
-            )
-          ])
+          _vm._v(". The source code is licensed\n      \t\t"),
+          _c(
+            "a",
+            {
+              attrs: { href: "http://opensource.org/licenses/mit-license.php" }
+            },
+            [_vm._v("MIT")]
+          ),
+          _vm._v(". The website content\n      \t\t\tis licensed "),
+          _c(
+            "a",
+            {
+              attrs: {
+                href: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+              }
+            },
+            [_vm._v("CC BY NC SA 4.0\n      \t\t")]
+          ),
+          _vm._v(".\n    \t")
         ])
       ])
     ])
@@ -37090,9 +37179,7 @@ var render = function() {
     },
     [
       _c("div", { staticClass: "navbar-brand" }, [
-        _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-          _vm._v("\n\t\t\tPhonebook\n\t\t")
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "div",
@@ -37113,12 +37200,30 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _vm._m(1)
       ])
     ]
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "navbar-item", attrs: { href: "https://bulma.io" } },
+      [
+        _c("img", {
+          attrs: {
+            src: "https://bulma.io/images/bulma-logo.png",
+            width: "112",
+            height: "28"
+          }
+        })
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

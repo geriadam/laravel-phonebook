@@ -10,24 +10,33 @@
 				<div class="field">
 					<label class="label">Name</label>
 					<div class="control">
-						<input class="input" type="text" placeholder="Name" v-model="list.name">
+						<input class="input" :class="{ 'is-danger':errors.name }" type="text" placeholder="Name" v-model="list.name">
+						<small v-if="errors.name" v-for="(value, key) in errors.name" class="has-text-danger">
+							{{ value }}
+						</small>
 					</div>
 				</div>
 				<div class="field">
 					<label class="label">Phone</label>
 					<div class="control">
-						<input class="input" type="number" placeholder="Phone" v-model="list.phone">
+						<input class="input" :class="{ 'is-danger':errors.phone }" type="number" placeholder="Phone" v-model="list.phone">
+							<small v-if="errors.phone" v-for="(value, key) in errors.phone" class="has-text-danger">
+							{{ value }}
+						</small>
 					</div>
 				</div>
 				<div class="field">
 					<label class="label">Email</label>
 					<div class="control">
-						<input class="input" type="email" placeholder="Email" v-model="list.email">
+						<input class="input" :class="{ 'is-danger':errors.email }" type="email" placeholder="Email" v-model="list.email">
 					</div>
+					<small v-if="errors.email" v-for="(value, key) in errors.email" class="has-text-danger">
+						{{ value }}
+					</small>
 				</div>
 			</section>
 			<footer class="modal-card-foot">
-				<button class="button is-success" @click='save'>
+				<button class="button disabled is-success" @click='save'>
 					Save Change
 				</button>
 				<button class="button" @click='close'>
@@ -39,7 +48,7 @@
 </template>
 <script>
 	export default{
-		props:['openmodal','closemodal'],
+		props:['openmodal'],
 		data(){
 			return{
 				list:{
@@ -56,7 +65,7 @@
 			},
 			save(){
 				axios.post('/phonebook', this.$data.list).then((response) => console.log(response))
-				.catch((error) => this.errors = error.response.data)
+				.catch((error) => this.errors = error.response.data.errors)
 			}
 		}
 	}
