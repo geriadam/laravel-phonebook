@@ -1834,6 +1834,14 @@ __webpack_require__.r(__webpack_exports__);
         _this.close();
 
         _this.$parent.lists.push(response.data);
+
+        _this.$parent.lists.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          } else if (a.name < b.name) {
+            return -1;
+          }
+        });
       }).catch(function (error) {
         return _this.errors = error.response.data.errors;
       });
@@ -1994,16 +2002,34 @@ var Update = __webpack_require__(/*! ./Edit.vue */ "./resources/js/components/Ed
       updateActive: '',
       lists: {},
       errors: {},
-      loading: false
+      loading: false,
+      searchQuery: '',
+      temp: ''
     };
   },
+  watch: {
+    searchQuery: function searchQuery() {
+      var _this = this;
+
+      if (this.searchQuery.length > 0) {
+        this.temp = this.lists.filter(function (item) {
+          return Object.keys(item).some(function (key) {
+            var string = String(item[key]);
+            return string.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+          });
+        });
+      } else {
+        this.temp = this.lists;
+      }
+    }
+  },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('/getData').then(function (response) {
-      return _this.lists = response.data;
+      return _this2.lists = _this2.temp = response.data;
     }).catch(function (error) {
-      return _this.errors = error.response.data.errors;
+      return _this2.errors = error.response.data.errors;
     });
   },
   methods: {
@@ -2014,24 +2040,24 @@ var Update = __webpack_require__(/*! ./Edit.vue */ "./resources/js/components/Ed
       this.addActive = this.showActive = this.updateActive = "";
     },
     openShow: function openShow(key) {
-      this.$children[1].list = this.lists[key];
+      this.$children[1].list = this.temp[key];
       this.showActive = "is-active";
     },
     openUpdate: function openUpdate(key) {
-      this.$children[2].list = this.lists[key];
+      this.$children[2].list = this.temp[key];
       this.updateActive = "is-active";
     },
     del: function del(key, id) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (confirm("Are you sure ? ")) {
         this.loading = !this.loading;
         axios.delete("/phonebook/".concat(id)).then(function (response) {
-          _this2.lists.splice(key, 1);
+          _this3.lists.splice(key, 1);
 
-          _this2.loading = !_this2.loading;
+          _this3.loading = !_this3.loading;
         }).catch(function (error) {
-          return _this2.erros = error.response.data.errors;
+          return _this3.erros = error.response.data.errors;
         });
       }
     }
@@ -37382,9 +37408,35 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "panel-block" }, [
+            _c("p", { staticClass: "control has-icon-left" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchQuery,
+                    expression: "searchQuery"
+                  }
+                ],
+                staticClass: "input is-small",
+                attrs: { type: "text", placeholder: "search" },
+                domProps: { value: _vm.searchQuery },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchQuery = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ]),
           _vm._v(" "),
-          _vm._l(_vm.lists, function(item, key) {
+          _vm._l(_vm.temp, function(item, key) {
             return _c("a", { staticClass: "panel-block" }, [
               _c("span", { staticClass: "column is-9" }, [
                 _vm._v("\n\t\t\t\t" + _vm._s(item.name) + "\n\t\t\t")
@@ -37454,17 +37506,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-block" }, [
-      _c("p", { staticClass: "control has-icon-left" }, [
-        _c("input", {
-          staticClass: "input is-small",
-          attrs: { type: "text", placeholder: "search" }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "icon is-small is-left" }, [
-          _c("i", { staticClass: "fa fa-search" })
-        ])
-      ])
+    return _c("span", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "fa fa-search" })
     ])
   }
 ]
